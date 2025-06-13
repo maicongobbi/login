@@ -14,7 +14,8 @@
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config .prettierrc.js",
     "prisma:seed": "dotenv -e .env.local -- prisma db seed",
     "prisma:db-push": "dotenv -e .env.local -- prisma db push",
-    "prisma:migrate-dev": "dotenv -e .env.local -- prisma migrate dev"
+    "prisma:migrate-dev": "dotenv -e .env.local -- prisma migrate dev",
+    "postinstall": "prisma generate --no-engine --schema=prisma/schema.prisma"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.9.1",
@@ -36,6 +37,8 @@
     "@tiptap/starter-kit": "^2.14.0",
     "@types/bcryptjs": "^2.4.6",
     "@zenstackhq/runtime": "2.15.1",
+    "@zenstackhq/server": "^2.15.1",
+    "@zenstackhq/tanstack-query": "^2.15.1",
     "dayjs": "^1.11.13",
     "next": "15.3.3",
     "next-auth": "^4.24.11",
@@ -54,8 +57,13 @@
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
     "prisma": "6.8.x",
-    "tsx": "^4.19.4",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3",
     "zenstack": "2.15.1"
-  }
+  },
+  "description": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

@@ -8,6 +8,12 @@ generator client {
   provider = "prisma-client-js"
   output   = "../prisma/generated/client"
 }
+plugin hooks {
+  provider = '@zenstackhq/tanstack-query'
+  target = 'react'
+  version = 'v5'
+  output = "./src/lib/hooks"
+}
 
 datasource db {
   provider = "postgresql"

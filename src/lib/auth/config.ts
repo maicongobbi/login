@@ -1,11 +1,32 @@
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import prisma from "../prisma";
+import { PrismaAdapter } from '@auth/prisma-adapter';
 
 
-//src/lib/auth/index.ts
-export const authOptions: NextAuthOptions = {
+
+import { DefaultSession, NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import prisma from '../prisma';
+
+
+/**
+ * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
+ * object and keep type safety.
+ *
+ * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
+ */
+declare module 'next-auth' {
+  interface Session extends DefaultSession {
+    user: {
+      id: string;
+    };
+  }
+}
+
+/**
+ * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
+ *
+ * @see https://next-auth.js.org/configuration/options
+ */
+export const authOptionsZenstack: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   session: {
     strategy: 'jwt',
@@ -46,4 +67,5 @@ export const authOptions: NextAuthOptions = {
       return session;
     }
   }
-};
+}
+

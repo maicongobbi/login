@@ -11,10 +11,12 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 
 import { Notifications } from "@mantine/notifications";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SessionProvider } from "next-auth/react";
 import { Suspense, type ReactNode } from "react";
 dayjs.locale('pt-br');
 
+const queryClient = new QueryClient();
 
 /* import 'mantine-react-table/styles.css'; */
 export default function Providers({ children }: { children: ReactNode }) {
@@ -24,16 +26,19 @@ export default function Providers({ children }: { children: ReactNode }) {
       <DatesProvider settings={{ locale: 'pt-BR' }}>
         <ModalsProvider>
           <Notifications />
-          <SessionProvider>
-            <Suspense fallback={
-              <Center h='100vh'>
-                <Loader size={'lg'} />
-              </Center>
-            }>
-              {children}
+          <QueryClientProvider client={queryClient}>
 
-            </Suspense>
-          </SessionProvider>
+            <SessionProvider>
+              <Suspense fallback={
+                <Center h='100vh'>
+                  <Loader size={'lg'} />
+                </Center>
+              }>
+                {children}
+
+              </Suspense>
+            </SessionProvider>
+          </QueryClientProvider>
         </ModalsProvider>
       </DatesProvider>
 
