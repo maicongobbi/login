@@ -2,7 +2,7 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 
 
 
-import { DefaultSession, NextAuthOptions } from 'next-auth';
+import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from '../prisma';
 
@@ -13,13 +13,13 @@ import prisma from '../prisma';
  *
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
-declare module 'next-auth' {
+/* declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
       id: string;
     };
   }
-}
+} */
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -63,6 +63,7 @@ export const authOptionsZenstack: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
+      //@ts-ignore
       session.user.id = token.id as string;
       return session;
     }

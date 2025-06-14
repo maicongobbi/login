@@ -9,17 +9,17 @@ export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
   const token = await getToken({ req, secret: process.env.SECRET });
 
-  const isPublicPath = ['/', '/welcome'].includes(path);
+  const isPublicPath = ['/signin', '/welcome'].includes(path);
 
   if (isPublicPath || token) {
     return NextResponse.next();
   }
 
-  return NextResponse.redirect(new URL('/welcome', req.url));
+  return NextResponse.redirect(new URL('/signin', req.url));
 }
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|api/auth|public|images|welcome|$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|api/auth|public|images|welcome|signin|$).*)',
   ],
 };
