@@ -1,5 +1,8 @@
+import { Layout } from "@/componets/layout";
 import Providers from "@/lib/providers";
+import '@gfazioli/mantine-onboarding-tour/styles.css';
 import { ColorSchemeScript, mantineHtmlProps } from "@mantine/core";
+import '@mantine/nprogress/styles.css';
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import React from "react";
@@ -34,8 +37,9 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Providers>
-
-          {children}
+          <Layout>
+            {children}
+          </Layout>
         </Providers>
 
       </body>
