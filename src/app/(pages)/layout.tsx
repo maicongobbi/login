@@ -2,21 +2,12 @@ import { Layout } from "@/componets/layout";
 import Providers from "@/lib/providers";
 import '@gfazioli/mantine-onboarding-tour/styles.css';
 import { ColorSchemeScript, mantineHtmlProps } from "@mantine/core";
+import '@mantine/core/styles.css';
 import '@mantine/nprogress/styles.css';
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import React from "react";
 
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -31,11 +22,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" {...mantineHtmlProps}>
+    <html lang="pt-BR" {...mantineHtmlProps}>
       <head>
         <ColorSchemeScript />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body >
         <Providers>
           <Layout>
             {children}

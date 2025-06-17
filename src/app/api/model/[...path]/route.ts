@@ -13,7 +13,7 @@ const handler = NextRequestHandler({
 
 async function getPrisma() {
   const session = await getServerSession(authOptionsZenstack);
-
+  //@ts-ignore
   return enhance(prisma, { user: session?.user });
 }
 
