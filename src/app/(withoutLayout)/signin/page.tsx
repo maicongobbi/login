@@ -1,4 +1,5 @@
 'use client'
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Anchor,
   Box,
@@ -7,6 +8,7 @@ import {
   Container,
   Divider,
   Group,
+  Loader,
   Paper,
   PasswordInput,
   Stack,
@@ -16,44 +18,92 @@ import {
   rem,
   useMantineTheme
 } from '@mantine/core';
-import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { IconAt, IconBrandFacebook, IconBrandGoogle, IconBrandInstagram, IconBrandX, IconLock } from '@tabler/icons-react';
+import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+// Schema de validação com Zod
+const loginSchema = z.object({
+  email: z.string().email({ message: "Email inválido" }),
+  password: z.string().min(6, { message: "Senha deve ter pelo menos 6 caracteres" })
+});
+
+// Tipo inferido do schema
+type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function SignIn() {
   const router = useRouter();
   const theme = useMantineTheme();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm({
-    initialValues: {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
       email: '',
-      password: '',
-    },
-    validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Email inválido'),
-      password: (value) => (value.length < 6 ? 'Senha deve ter pelo menos 6 caracteres' : null),
-    },
+      password: ''
+    }
   });
 
-  const handleSubmit = (values: { email: string; password: string }) => {
-    notifications.show({
-      title: 'Login realizado!',
-      message: `Bem-vindo de volta, ${values.email}`,
-      color: 'green',
-    });
+  const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
+    setIsLoading(true);
 
-    // Redireciona para a página inicial após login
-    router.push('/');
+    try {
+      // Chamada ao NextAuth para autenticação
+      const result = await signIn('credentials', {
+        email: data.email,
+        password: data.password,
+        redirect: false
+      });
+
+      if (result?.error) {
+        // Tratar erros específicos
+        if (result.error === 'CredentialsSignin') {
+          setError('password', {
+            type: 'manual',
+            message: 'Credenciais inválidas'
+          });
+        } else {
+          notifications.show({
+            title: 'Erro no login',
+            message: result.error,
+            color: 'red',
+          });
+        }
+        return;
+      }
+
+      // Login bem-sucedido
+      notifications.show({
+        title: 'Login realizado!',
+        message: `Bem-vindo de volta, ${data.email}`,
+        color: 'green',
+      });
+
+      // Redirecionar para a página inicial
+      router.push('/');
+    } catch (error) {
+      notifications.show({
+        title: 'Erro',
+        message: 'Ocorreu um erro inesperado',
+        color: 'red',
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSocialLogin = (provider: string) => {
-    notifications.show({
-      title: 'Login com rede social',
-      message: `Redirecionando para ${provider}`,
-      color: 'blue',
-    });
+    signIn(provider, { callbackUrl: '/' }); // Redirecionar para home após login
   };
 
   return (
@@ -63,15 +113,21 @@ export default function SignIn() {
           Bem-vindo de volta!
         </Title>
 
-        <Paper withBorder shadow="md" p={30} radius="md" >
-          <form onSubmit={form.onSubmit(handleSubmit)}>
+
+        <Paper withBorder shadow="md" p={30} radius="md" style={{
+          /* @ts-ignore */
+          backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
+        }}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Stack>
               <TextInput
                 label="Email"
                 placeholder="seu@email.com"
                 required
                 leftSection={<IconAt size={16} />}
-                {...form.getInputProps('email')}
+                error={errors.email?.message}
+                {...register('email')}
+                disabled={isLoading}
               />
 
               <PasswordInput
@@ -79,7 +135,9 @@ export default function SignIn() {
                 placeholder="Sua senha"
                 required
                 leftSection={<IconLock size={16} />}
-                {...form.getInputProps('password')}
+                error={errors.password?.message}
+                {...register('password')}
+                disabled={isLoading}
               />
 
               <Group justify="space-between" mt="lg">
@@ -88,8 +146,15 @@ export default function SignIn() {
                 </Anchor>
               </Group>
 
-              <Button fullWidth mt="xl" type="submit" size="md">
-                Entrar
+              <Button
+                fullWidth
+                mt="xl"
+                type="submit"
+                size="md"
+                disabled={isLoading}
+                leftSection={isLoading && <Loader size="sm" />}
+              >
+                {isLoading ? 'Entrando...' : 'Entrar'}
               </Button>
             </Stack>
           </form>
@@ -101,8 +166,9 @@ export default function SignIn() {
               leftSection={<IconBrandGoogle size={18} />}
               variant="outline"
               radius="xl"
-              onClick={() => handleSocialLogin('Google')}
+              onClick={() => handleSocialLogin('google')}
               color={theme.colors.red[6]}
+              disabled={isLoading}
             >
               Google
             </Button>
@@ -110,8 +176,9 @@ export default function SignIn() {
               leftSection={<IconBrandFacebook size={18} />}
               variant="outline"
               radius="xl"
-              onClick={() => handleSocialLogin('Facebook')}
+              onClick={() => handleSocialLogin('facebook')}
               color={theme.colors.blue[6]}
+              disabled={isLoading}
             >
               Facebook
             </Button>
@@ -122,8 +189,9 @@ export default function SignIn() {
               leftSection={<IconBrandInstagram size={18} />}
               variant="outline"
               radius="xl"
-              onClick={() => handleSocialLogin('Instagram')}
+              onClick={() => handleSocialLogin('instagram')}
               color={theme.colors.pink[6]}
+              disabled={isLoading}
             >
               Instagram
             </Button>
@@ -131,8 +199,9 @@ export default function SignIn() {
               leftSection={<IconBrandX size={18} />}
               variant="outline"
               radius="xl"
-              onClick={() => handleSocialLogin('X')}
+              onClick={() => handleSocialLogin('twitter')}
               color={theme.colors.dark[6]}
+              disabled={isLoading}
             >
               X
             </Button>

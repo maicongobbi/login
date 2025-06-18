@@ -14,9 +14,7 @@ export default function Home() {
       size="md"
       style={{ marginTop: 20 }}
     >
-      Go to
-      {' '}
-      teste
+      página inicial - ir para teste
     </Button>
 
 
