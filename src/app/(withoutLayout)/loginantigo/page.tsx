@@ -91,7 +91,9 @@ export default function SignIn() {
 
       // Redirecionar para a página inicial
       router.push('/');
+
     } catch (error) {
+      console.error('Erro ao fazer login:', error);
       notifications.show({
         title: 'Erro',
         message: 'Ocorreu um erro inesperado',
