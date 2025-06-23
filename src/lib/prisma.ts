@@ -1,15 +1,38 @@
+import { PrismaClient } from "@prisma/client";
 
-import { withAccelerate } from '@prisma/extension-accelerate'
-import { PrismaClient } from '../../prisma/generated/client'
+const globalForPrisma = global as unknown as {
+  prisma: PrismaClient | undefined;
+};
 
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: ['error'],
+    errorFormat: 'pretty',
+    transactionOptions: {
+      maxWait: 15000,
+      timeout: 16000
+    }
+  });
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
-const prisma = new PrismaClient().$extends(withAccelerate())
+/* let prisma: PrismaClient;
 
-const globalForPrisma = global as unknown as { prisma: typeof prisma }
+if (typeof window === "undefined") {
+  if (process.env.NODE_ENV === "production") {
+    prisma = new PrismaClient();
+  } else {
+    if (!(global as any).prisma) {
+      (global as any).prisma = new PrismaClient();
+    }
+    prisma = (global as any).prisma;
+  }
+} else {
+  // In the browser, prisma is undefined
+  prisma = undefined as unknown as PrismaClient;
+}
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
-
-export default prisma
+export default prisma; */
 
 /* import { PrismaClient } from "@prisma/client";
 

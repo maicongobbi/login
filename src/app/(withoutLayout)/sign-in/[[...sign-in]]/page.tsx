@@ -1,10 +1,13 @@
 'use client';
-import { SignIn } from "@clerk/nextjs";
+
+import SignInComponent from "@/componets/sign-in";
+import { Box } from "@mantine/core";
 
 export default function Page() {
   return <>
-
-    <SignIn />
+    <Box maw={400} mx="auto">
+      <SignInComponent />
+    </Box>
 
   </>
 }

@@ -120,7 +120,7 @@ export default function WelcomePage() {
             <Group justify="center">
               <Button
                 component={Link}
-                href="/signin"
+                href="/sign-in"
                 variant="gradient"
                 gradient={{ from: 'indigo', to: 'cyan' }}
                 size="lg"
@@ -267,7 +267,7 @@ export default function WelcomePage() {
           <Center>
             <Button
               component={Link}
-              href="/signin"
+              href="/sign-in"
               variant="gradient"
               gradient={{ from: 'indigo', to: 'cyan' }}
               size="xl"

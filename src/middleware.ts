@@ -1,4 +1,4 @@
-
+/* usando clerk
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
 const isPublicRoute = createRouteMatcher([
@@ -24,23 +24,33 @@ export const config = {
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],
-}
+} */
 
-/* // middleware.ts
-import { getToken } from 'next-auth/jwt';
+// middleware.ts
+import { auth } from '@betterAuth/utils/auth.ts';
+import { headers } from 'next/headers';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 export async function middleware(req: NextRequest) {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+  console.log('Session:', session);
+
 
 
   const path = req.nextUrl.pathname;
-  const token = await getToken({ req, secret: process.env.SECRET });
 
-  const isPublicPath = ['/signin', '/welcome'].includes(path);
+  const isPublicPath = [
+    '/sign-in',
+    '/sign-up',
+    '/forgot-password',
+    '/welcome'].includes(path);
   console.log('\n\n\nMiddleware:', path);
 
-  if (isPublicPath || token) {
+  if (isPublicPath || session) {
+
     return NextResponse.next();
   }
 
@@ -53,4 +63,3 @@ export const config = {
   ],
 };
 
- */

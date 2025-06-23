@@ -4,7 +4,8 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import FacebookProvider from 'next-auth/providers/facebook';
 import GoogleProvider from 'next-auth/providers/google';
-import prisma from "../prisma";
+import { prisma } from "../prisma";
+
 
 //src/lib/auth/index.ts
 export const authOptions: NextAuthOptions = {
