@@ -1,4 +1,7 @@
-import prisma from '@/lib/prisma'
+//import prisma from '@/lib/prisma'
+
+import { prisma } from "@/lib/prisma"
+
 
 
 async function main() {
