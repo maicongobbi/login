@@ -1,4 +1,4 @@
-'use client'
+
 import { OnboardingTour, OnboardingTourController, OnboardingTourStep } from '@gfazioli/mantine-onboarding-tour';
 import { Button, Code, Divider, Group, Stack, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';

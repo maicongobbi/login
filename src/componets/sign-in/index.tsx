@@ -12,6 +12,7 @@ import {
   Text,
   TextInput
 } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { IconBrandApple, IconBrandFacebook, IconBrandGoogle, IconKey, IconLock, IconMail } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -23,12 +24,47 @@ export default function SignInComponent() {
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
+  async function signInWithEmail() {
+    setLoading(true);
+    await signIn.email(
+      { email, password },
+
+      {
+        onRequest: (data) => {
+          console.log('Signing in with email:', data);
+          setLoading(true)
+        },
+        onResponse: (resp) => {
+          console.log('Sign in response received', resp);
+          if (resp.response.statusText === 'UNAUTHORIZED') {
+            notifications.show({
+              title: 'Erro ao fazer login',
+              message: 'Email ou senha inválidos. Por favor, tente novamente.',
+              color: 'red',
+            });
+          }
+          setLoading(false)
+        },
+        onSuccess: (data) => {
+          console.log('Sign in successful:', data);
+          notifications.show({
+            title: 'Login bem-sucedido',
+            message: 'Você foi autenticado com sucesso.',
+            color: 'green',
+          });
+          // Redirect to dashboard or home page
+          window.location.href = '/dashboard';
+        }
+      }
+    );
+  }
+
   return (
     <Card shadow="md" padding="lg" radius="md" withBorder className="max-w-md">
       <Card.Section p="md">
-        <Text size="xl" fw={700} ta="center">Sign In</Text>
+        <Text size="xl" fw={700} ta="center">Entrar</Text>
         <Text c="dimmed" size="sm" ta="center">
-          Enter your email below to login to your account
+          Insira seu email abaixo para fazer login na sua conta
         </Text>
       </Card.Section>
 
@@ -45,7 +81,7 @@ export default function SignInComponent() {
 
           <PasswordInput
             label="Senha"
-            placeholder="password"
+            placeholder="senha"
             autoComplete="password"
             required
             leftSection={<IconLock size={16} />}
@@ -53,11 +89,11 @@ export default function SignInComponent() {
             onChange={(e) => setPassword(e.currentTarget.value)}
           />
           <Link href="#" style={{ fontSize: '0.8rem' }}>
-            Forgot your password?
+            Esqueceu sua senha?
           </Link>
 
           <Checkbox
-            label="Remember me"
+            label="Lembrar de mim"
             checked={rememberMe}
             onChange={() => setRememberMe(!rememberMe)}
           />
@@ -67,19 +103,13 @@ export default function SignInComponent() {
             disabled={loading}
             leftSection={loading ? <Loader size="xs" /> : <IconKey size={16} />}
             onClick={async () => {
-              await signIn.email(
-                { email, password },
-                {
-                  onRequest: () => setLoading(true),
-                  onResponse: () => setLoading(false),
-                }
-              );
+              await signInWithEmail();
             }}
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? 'Entrando...' : 'Entrar'}
           </Button>
 
-          <Divider label="Or continue with" labelPosition="center" my="sm" />
+          <Divider label="Ou continue com" labelPosition="center" my="sm" />
 
           <Button
             variant="outline"
@@ -96,7 +126,7 @@ export default function SignInComponent() {
               );
             }}
           >
-            Sign in with Google
+            Entrar com Google
           </Button>
 
           <Button
@@ -114,7 +144,7 @@ export default function SignInComponent() {
               );
             }}
           >
-            Sign in with Facebook
+            Entrar com Facebook
           </Button>
 
           <Button
@@ -132,9 +162,21 @@ export default function SignInComponent() {
               );
             }}
           >
-            Sign in with Apple
+            Entrar com Apple
           </Button>
         </Stack>
+        <Divider label="Novo por aqui" labelPosition="center" my="sm" />
+        <Button
+          component='a'
+          href="/sign-up"
+          variant="outline"
+          fullWidth
+          leftSection={<IconKey size={16} />}
+          disabled={loading}
+        >
+          Criar conta
+        </Button>
+
       </Card.Section>
 
       <Card.Section p="md">

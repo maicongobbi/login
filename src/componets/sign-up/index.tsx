@@ -45,6 +45,43 @@ export default function SignUp() {
     }
   };
 
+  async function createAccount() {
+    setCarregando(true);
+    await signUp.email({
+      image: imagem ? await converterImagemParaBase64(imagem) : "",
+      email,
+      password: senha,
+      name: `${nome}`,
+
+
+      callbackURL: "/dashboard",
+      fetchOptions: {
+        onResponse: (data) => {
+          console.log('Response received:', data);
+          setCarregando(false);
+        },
+
+        onRequest: (req) => {
+          console.log('Request made:', req);
+          setCarregando(true);
+        },
+        onError: (ctx: { error: { message: string } }) => {
+          notifications.show({
+            title: 'Erro ao criar conta',
+            message: ctx.error.message,
+            color: 'red',
+            icon: <IconX size={16} />,
+            autoClose: 5000,
+          });
+        },
+        onSuccess: async (data) => {
+          console.log('Account created successfully:', data);
+          router.push("/dashboard")
+        },
+      },
+    });
+  }
+
   return (
     <Card shadow="md" p="lg" radius="md" withBorder className="max-w-md" style={{ borderRadius: '0 0 8px 8px' }}>
       <Card.Section p="md" bg="blue.1">
@@ -139,27 +176,7 @@ export default function SignUp() {
             leftSection={carregando ? <Loader size="xs" /> : <IconUserCircle size={18} />}
             disabled={carregando}
             onClick={async () => {
-              await signUp.email({
-                email,
-                password: senha,
-                name: `${nome}`,
-                image: imagem ? await converterImagemParaBase64(imagem) : "",
-                callbackURL: "/dashboard",
-                fetchOptions: {
-                  onResponse: () => setCarregando(false),
-                  onRequest: () => setCarregando(true),
-                  onError: (ctx: { error: { message: string } }) => {
-                    notifications.show({
-                      title: 'Erro ao criar conta',
-                      message: ctx.error.message,
-                      color: 'red',
-                      icon: <IconX size={16} />,
-                      autoClose: 5000,
-                    });
-                  },
-                  onSuccess: async () => router.push("/dashboard"),
-                },
-              });
+              await createAccount();
             }}
           >
             {carregando ? 'Criando conta...' : 'Criar Conta'}

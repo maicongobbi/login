@@ -28,6 +28,7 @@ export const config = {
 
 // middleware.ts
 import { auth } from '@betterAuth/utils/auth.ts';
+import { getCookieCache } from "better-auth/cookies";
 import { headers } from 'next/headers';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
@@ -37,9 +38,9 @@ export async function middleware(req: NextRequest) {
     headers: await headers()
   })
   console.log('Session:', session);
+  const sessionCookie = await getCookieCache(req);
 
-
-
+  console.log('Session Cookie:', sessionCookie);
   const path = req.nextUrl.pathname;
 
   const isPublicPath = [

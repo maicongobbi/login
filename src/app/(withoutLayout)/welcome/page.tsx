@@ -10,7 +10,6 @@ import {
   Container,
   Divider,
   Group,
-  Image,
   Overlay,
   rem,
   SimpleGrid,
@@ -19,7 +18,7 @@ import {
   Title,
   useMantineTheme
 } from '@mantine/core';
-import { IconArrowRight, IconBrandFacebook, IconBrandInstagram, IconBrandLinkedin, IconBrandTwitter, IconChartBar, IconMail, IconPhone, IconRocket, IconShieldLock } from '@tabler/icons-react';
+import { IconArrowRight, IconBrandFacebook, IconBrandInstagram, IconBrandLinkedin, IconBrandTwitter, IconBrandWhatsapp, IconChartBar, IconMail, IconRocket, IconShieldLock } from '@tabler/icons-react';
 import Link from 'next/link';
 
 export default function WelcomePage() {
@@ -29,7 +28,7 @@ export default function WelcomePage() {
   const features = [
     {
       title: 'Segurança Avançada',
-      description: 'Proteção de dados com criptografia de última geração e armazenamento em nuvem',
+      description: 'Proteção de dados com criptografia e armazenamento em nuvem',
       icon: <IconShieldLock size={32} />,
       color: 'blue'
     },
@@ -41,34 +40,43 @@ export default function WelcomePage() {
     },
     {
       title: 'Experiência Premium',
-      description: 'Paineis gerenciais intuitivos e relatórios detalhados',
+      description: 'Extração de dados, painéis gerenciais intuitivos e relatórios detalhados',
       icon: <IconChartBar size={32} />,
       color: 'violet'
     }
   ];
 
   // Imagens para a galeria
-  const galleryImages = [
-    'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1556761175-4b46a572b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1590402494682-cd3fb53b1f70?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1586769852836-bc069f19e1b6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'
-  ];
+  /*  const galleryImages = [
+     'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+     'https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+     'https://images.unsplash.com/photo-1556761175-4b46a572b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+     'https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+     'https://images.unsplash.com/photo-1590402494682-cd3fb53b1f70?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+     'https://images.unsplash.com/photo-1586769852836-bc069f19e1b6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'
+   ]; */
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{
+      minHeight: '100vh', display: 'flex', flexDirection: 'column',
+      zIndex: 0
+
+    }}>
+      <Overlay gradient={`linear-gradient(180deg, rgba(0, 0, 0, 0.226) 0%, rgba(0, 0, 0, 0.048) 100%)`}
+        style={{ zIndex: 1 }}
+      />
       {/* Header */}
       <Group justify="space-between" p="md" style={{ backgroundColor: theme.colors.dark[8] }}>
         <Group>
-          <Avatar color="blue" radius="xl">LA</Avatar>
+          <Avatar color="blue" radius="xl">GTI</Avatar>
           <Title order={3} c="white">
-            Login APP
+            Gobbi TI
           </Title>
         </Group>
-        <Group>
-          <Button component={Link} href="/signin" variant="light" size="sm">
+        <Group style={{
+          zIndex: 2
+        }}>
+          <Button component={Link} href="/sign-in" variant="light" size="sm">
             Entrar
           </Button>
           <Button component={Link} href="/signup" variant="gradient"
@@ -81,11 +89,14 @@ export default function WelcomePage() {
       {/* Hero Section */}
       <BackgroundImage
         src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&q=80"
-        style={{ height: '85vh' }}
+
+        style={{
+          height: '85vh'
+
+
+        }}
       >
-        <Overlay gradient={`linear-gradient(180deg, rgba(0, 0, 0, 0.226) 0%, rgba(0, 0, 0, 0.048) 100%)`}
-          style={{ zIndex: 1 }}
-        />
+
         <Center style={{ height: '100%', position: 'relative', zIndex: 1 }}>
           <div style={{
             textAlign: 'center', maxWidth: rem(800),
@@ -104,7 +115,7 @@ export default function WelcomePage() {
               }}
 
             >
-              Bem-vindo à Login APP
+              Bem-vindo à Gobbi TI
             </Title>
             <Text
               size="xl"
@@ -115,19 +126,19 @@ export default function WelcomePage() {
                 textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
               }}
             >
-              Sua solução completa para autenticação segura e eficiente para aplicações GobbiTI
+              Webb Apps personalizados para o seu negócio.
             </Text>
             <Group justify="center">
               <Button
                 component={Link}
-                href="/sign-in"
+                href="https://api.whatsapp.com/send?phone=5567992326947"
                 variant="gradient"
                 gradient={{ from: 'indigo', to: 'cyan' }}
                 size="lg"
                 radius="xl"
                 rightSection={<IconArrowRight size={18} />}
               >
-                Comece Agora
+                Entrar em contato
               </Button>
               <Button
                 variant="outline"
@@ -145,7 +156,7 @@ export default function WelcomePage() {
       {/* Features Section */}
       <Container py={80} size="xl">
         <Title order={2} ta="center" mb={50} style={{ fontSize: rem(36) }}>
-          Por que escolher a Login APP?
+          Por que escolher a Gobbi TI?
         </Title>
 
         <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="xl">
@@ -181,7 +192,7 @@ export default function WelcomePage() {
       </Container>
 
       {/* Gallery Section */}
-      <Box py={80} >
+      {/*   <Box py={80} >
         <Container size="xl">
           <Title order={2} ta="center" mb={50} style={{ fontSize: rem(36) }}>
             Nossa Plataforma em Ação
@@ -213,7 +224,7 @@ export default function WelcomePage() {
             </Text>
           </Center>
         </Container>
-      </Box>
+      </Box> */}
 
       {/* Testimonials */}
       {/*
@@ -262,19 +273,19 @@ export default function WelcomePage() {
             Pronto para começar?
           </Title>
           <Text size="xl" ta="center" mb="xl" c="dimmed" style={{ maxWidth: rem(700), margin: '0 auto' }}>
-            Cadastre-se agora mesmo e leve a experiência de autenticação do seu aplicativo para o próximo nível
+            Entre em contato conosco e descubra como a Gobbi TI pode transformar a gerencia do seu negócio.
           </Text>
           <Center>
             <Button
               component={Link}
-              href="/sign-in"
+              href="https://api.whatsapp.com/send?phone=5567992326947"
               variant="gradient"
               gradient={{ from: 'indigo', to: 'cyan' }}
               size="xl"
               radius="xl"
               rightSection={<IconArrowRight size={20} />}
             >
-              Criar Conta Gratuita
+              Entrar em contato
             </Button>
           </Center>
         </Container>
@@ -286,13 +297,13 @@ export default function WelcomePage() {
           <SimpleGrid cols={{ base: 1, sm: 3 }} spacing={40}>
             <div>
               <Group mb="md">
-                <Avatar color="blue" radius="xl">LA</Avatar>
+                <Avatar color="blue" radius="xl">GTI</Avatar>
                 <Title order={3} c="white">
-                  Login APP
+                  Gobbi TI
                 </Title>
               </Group>
               <Text c="dimmed" mb="sm">
-                Sua solução completa para autenticação segura e eficiente em aplicações modernas.
+                Sua solução completa para gerenciamento do seu negócio.
               </Text>
               <Group mt="md">
                 {[IconBrandFacebook, IconBrandTwitter, IconBrandInstagram, IconBrandLinkedin].map((Icon, index) => (
@@ -326,9 +337,17 @@ export default function WelcomePage() {
                   <Text>Av. Paulista, 1000 - São Paulo, SP</Text>
                 </Group> */}
                 <Group c="dimmed">
-                  <IconPhone size={18} />
-                  <Text>(67) 9 9232-6947</Text>
+                  <IconBrandWhatsapp size={18} />
+                  <Button
+                    component="a" href="https://api.whatsapp.com/send?phone=5567992326947" target="_blank"
+                    variant="subtle" color="dimmed"
+                    p={0}
+                    m={0}                  >
+                    (67) 9 9232-6947
+                  </Button>
+
                 </Group>
+
                 <Group c="dimmed">
                   <IconMail size={18} />
                   <Text>maicongobbi@gmail.com</Text>
