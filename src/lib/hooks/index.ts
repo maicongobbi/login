@@ -6,10 +6,9 @@
 // @ts-nocheck
 
 export * from './user';
-export * from './account';
 export * from './session';
-export * from './verification-token';
-export * from './authenticator';
+export * from './account';
+export * from './verification';
 export { getQueryKey } from '@zenstackhq/tanstack-query/runtime-v5';
 export { Provider } from '@zenstackhq/tanstack-query/runtime-v5/react';
 export { default as metadata } from './__model_meta';

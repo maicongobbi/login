@@ -13,49 +13,37 @@ const metadata = {
                     name: "id",
                     type: "String",
                     isId: true,
-                    attributes: [{ "name": "@default", "args": [] }],
                 }, name: {
                     name: "name",
                     type: "String",
-                    isOptional: true,
                 }, email: {
                     name: "email",
                     type: "String",
                 }, emailVerified: {
                     name: "emailVerified",
                     type: "Boolean",
-                    isOptional: true,
-                    attributes: [{ "name": "@default", "args": [{ "value": false }] }],
                 }, image: {
                     name: "image",
                     type: "String",
                     isOptional: true,
-                }, accounts: {
-                    name: "accounts",
-                    type: "Account",
-                    isDataModel: true,
-                    isArray: true,
-                    backLink: 'user',
+                }, createdAt: {
+                    name: "createdAt",
+                    type: "DateTime",
+                }, updatedAt: {
+                    name: "updatedAt",
+                    type: "DateTime",
                 }, sessions: {
                     name: "sessions",
                     type: "Session",
                     isDataModel: true,
                     isArray: true,
                     backLink: 'user',
-                }, Authenticator: {
-                    name: "Authenticator",
-                    type: "Authenticator",
+                }, accounts: {
+                    name: "accounts",
+                    type: "Account",
                     isDataModel: true,
                     isArray: true,
                     backLink: 'user',
-                }, createdAt: {
-                    name: "createdAt",
-                    type: "DateTime",
-                    attributes: [{ "name": "@default", "args": [] }],
-                }, updatedAt: {
-                    name: "updatedAt",
-                    type: "DateTime",
-                    attributes: [{ "name": "@updatedAt", "args": [] }],
                 },
             }, uniqueConstraints: {
                 id: {
@@ -67,90 +55,37 @@ const metadata = {
                 },
             },
         },
-        account: {
-            name: 'Account', fields: {
-                userId: {
-                    name: "userId",
-                    type: "String",
-                    isForeignKey: true,
-                    relationField: 'user',
-                }, type: {
-                    name: "type",
-                    type: "String",
-                }, provider: {
-                    name: "provider",
+        session: {
+            name: 'Session', fields: {
+                id: {
+                    name: "id",
                     type: "String",
                     isId: true,
-                }, providerAccountId: {
-                    name: "providerAccountId",
+                }, expiresAt: {
+                    name: "expiresAt",
+                    type: "DateTime",
+                }, token: {
+                    name: "token",
                     type: "String",
-                    isId: true,
-                }, refresh_token: {
-                    name: "refresh_token",
-                    type: "String",
-                    isOptional: true,
-                }, access_token: {
-                    name: "access_token",
-                    type: "String",
-                    isOptional: true,
-                }, expires_at: {
-                    name: "expires_at",
-                    type: "Int",
-                    isOptional: true,
-                }, token_type: {
-                    name: "token_type",
-                    type: "String",
-                    isOptional: true,
-                }, scope: {
-                    name: "scope",
-                    type: "String",
-                    isOptional: true,
-                }, id_token: {
-                    name: "id_token",
-                    type: "String",
-                    isOptional: true,
-                }, session_state: {
-                    name: "session_state",
-                    type: "String",
-                    isOptional: true,
                 }, createdAt: {
                     name: "createdAt",
                     type: "DateTime",
-                    attributes: [{ "name": "@default", "args": [] }],
                 }, updatedAt: {
                     name: "updatedAt",
                     type: "DateTime",
-                    attributes: [{ "name": "@updatedAt", "args": [] }],
-                }, user: {
-                    name: "user",
-                    type: "User",
-                    isDataModel: true,
-                    backLink: 'accounts',
-                    isRelationOwner: true,
-                    onDeleteAction: 'Cascade',
-                    foreignKeyMapping: { "id": "userId" },
-                },
-            }, uniqueConstraints: {
-                provider_providerAccountId: {
-                    name: "provider_providerAccountId",
-                    fields: ["provider", "providerAccountId"]
-                },
-            },
-        },
-        session: {
-            name: 'Session', fields: {
-                sessionToken: {
-                    name: "sessionToken",
+                }, ipAddress: {
+                    name: "ipAddress",
                     type: "String",
-                    isId: true,
+                    isOptional: true,
+                }, userAgent: {
+                    name: "userAgent",
+                    type: "String",
+                    isOptional: true,
                 }, userId: {
                     name: "userId",
                     type: "String",
                     isForeignKey: true,
                     relationField: 'user',
-                }, expires: {
-                    name: "expires",
-                    type: "DateTime",
                 }, user: {
                     name: "user",
                     type: "User",
@@ -159,97 +94,119 @@ const metadata = {
                     isRelationOwner: true,
                     onDeleteAction: 'Cascade',
                     foreignKeyMapping: { "id": "userId" },
-                }, createdAt: {
-                    name: "createdAt",
-                    type: "DateTime",
-                    attributes: [{ "name": "@default", "args": [] }],
-                }, updatedAt: {
-                    name: "updatedAt",
-                    type: "DateTime",
-                    attributes: [{ "name": "@updatedAt", "args": [] }],
                 },
             }, uniqueConstraints: {
-                sessionToken: {
-                    name: "sessionToken",
-                    fields: ["sessionToken"]
-                },
-            },
-        },
-        verificationToken: {
-            name: 'VerificationToken', fields: {
-                identifier: {
-                    name: "identifier",
-                    type: "String",
-                    isId: true,
+                id: {
+                    name: "id",
+                    fields: ["id"]
                 }, token: {
                     name: "token",
-                    type: "String",
-                    isId: true,
-                }, expires: {
-                    name: "expires",
-                    type: "DateTime",
-                },
-            }, uniqueConstraints: {
-                identifier_token: {
-                    name: "identifier_token",
-                    fields: ["identifier", "token"]
+                    fields: ["token"]
                 },
             },
         },
-        authenticator: {
-            name: 'Authenticator', fields: {
-                credentialID: {
-                    name: "credentialID",
+        account: {
+            name: 'Account', fields: {
+                id: {
+                    name: "id",
                     type: "String",
                     isId: true,
+                }, accountId: {
+                    name: "accountId",
+                    type: "String",
+                }, providerId: {
+                    name: "providerId",
+                    type: "String",
                 }, userId: {
                     name: "userId",
                     type: "String",
-                    isId: true,
                     isForeignKey: true,
                     relationField: 'user',
-                }, providerAccountId: {
-                    name: "providerAccountId",
-                    type: "String",
-                }, credentialPublicKey: {
-                    name: "credentialPublicKey",
-                    type: "String",
-                }, counter: {
-                    name: "counter",
-                    type: "Int",
-                }, credentialDeviceType: {
-                    name: "credentialDeviceType",
-                    type: "String",
-                }, credentialBackedUp: {
-                    name: "credentialBackedUp",
-                    type: "Boolean",
-                }, transports: {
-                    name: "transports",
-                    type: "String",
-                    isOptional: true,
                 }, user: {
                     name: "user",
                     type: "User",
                     isDataModel: true,
-                    backLink: 'Authenticator',
+                    backLink: 'accounts',
                     isRelationOwner: true,
                     onDeleteAction: 'Cascade',
                     foreignKeyMapping: { "id": "userId" },
+                }, accessToken: {
+                    name: "accessToken",
+                    type: "String",
+                    isOptional: true,
+                }, refreshToken: {
+                    name: "refreshToken",
+                    type: "String",
+                    isOptional: true,
+                }, idToken: {
+                    name: "idToken",
+                    type: "String",
+                    isOptional: true,
+                }, accessTokenExpiresAt: {
+                    name: "accessTokenExpiresAt",
+                    type: "DateTime",
+                    isOptional: true,
+                }, refreshTokenExpiresAt: {
+                    name: "refreshTokenExpiresAt",
+                    type: "DateTime",
+                    isOptional: true,
+                }, scope: {
+                    name: "scope",
+                    type: "String",
+                    isOptional: true,
+                }, password: {
+                    name: "password",
+                    type: "String",
+                    isOptional: true,
+                }, createdAt: {
+                    name: "createdAt",
+                    type: "DateTime",
+                }, updatedAt: {
+                    name: "updatedAt",
+                    type: "DateTime",
                 },
             }, uniqueConstraints: {
-                userId_credentialID: {
-                    name: "userId_credentialID",
-                    fields: ["userId", "credentialID"]
-                }, credentialID: {
-                    name: "credentialID",
-                    fields: ["credentialID"]
+                id: {
+                    name: "id",
+                    fields: ["id"]
+                },
+            },
+        },
+        verification: {
+            name: 'Verification', fields: {
+                id: {
+                    name: "id",
+                    type: "String",
+                    isId: true,
+                }, identifier: {
+                    name: "identifier",
+                    type: "String",
+                }, value: {
+                    name: "value",
+                    type: "String",
+                }, expiresAt: {
+                    name: "expiresAt",
+                    type: "DateTime",
+                }, createdAt: {
+                    name: "createdAt",
+                    type: "DateTime",
+                    isOptional: true,
+                }, updatedAt: {
+                    name: "updatedAt",
+                    type: "DateTime",
+                    isOptional: true,
+                },
+            }, uniqueConstraints: {
+                id: {
+                    name: "id",
+                    fields: ["id"]
                 },
             },
         },
 
     },
     deleteCascade: {
-        user: ['Account', 'Session', 'Authenticator'],
+        user: ['Session', 'Account'],
 
     },
     authModel: 'User'

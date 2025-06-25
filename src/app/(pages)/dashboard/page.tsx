@@ -1,11 +1,15 @@
+'use client'
 
-import { useUser } from "@clerk/nextjs";
+import { useSession } from "@/lib/auth/betterAuthClient/client";
 import { Alert } from "@mantine/core";
 
 export default function Home() {
-  const { isSignedIn, user, isLoaded } = useUser();
-  console.log('User:', user, 'Is Signed In:', isSignedIn, 'Is Loaded:', isLoaded);
 
+  const { data, isPending } = useSession();
+  console.log('Session:', data, isPending);
+  const { user, session } = data || {};
+  console.log('User:', user);
+  console.log('Session:', session);
 
   return (
     <>

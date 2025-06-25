@@ -28,7 +28,13 @@
         "./src/*"
       ],
       "@betterAuth/*": [
-        "./lib/*"
+        "./src/lib/auth/betterAuthClient/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@lib/*": [
+        "./src/lib/*"
       ],
     }
   },

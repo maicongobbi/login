@@ -1,66 +1,47 @@
-/* usando clerk
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
-
-const isPublicRoute = createRouteMatcher([
-  '/sign-in(.*)',
-  '/sign-up(.*)'
-])
-
-export default clerkMiddleware(async (auth, req) => {
-
-
-
-  console.log('\n\n\nauth for', await auth())
-  if (!isPublicRoute(req)) {
-    console.log('\n\n\nMiddleware: Protecting route', req.nextUrl.pathname)
-    await auth.protect()
-  }
-})
-
-export const config = {
-  matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    // Always run for API routes
-    '/(api|trpc)(.*)',
-  ],
-} */
 
 // middleware.ts
-import { auth } from '@betterAuth/utils/auth.ts';
-import { getCookieCache } from "better-auth/cookies";
-import { headers } from 'next/headers';
+import { auth } from '@/lib/utils/auth';
+import { betterFetch } from '@better-fetch/fetch';
+
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-export async function middleware(req: NextRequest) {
-  const session = await auth.api.getSession({
-    headers: await headers()
-  })
-  console.log('Session:', session);
-  const sessionCookie = await getCookieCache(req);
+type Session = typeof auth.$Infer.Session;
 
-  console.log('Session Cookie:', sessionCookie);
-  const path = req.nextUrl.pathname;
+export async function middleware(request: NextRequest) {
+  const { data: session } = await betterFetch<Session>("/api/auth/get-session", {
+    baseURL: request.nextUrl.origin,
+    headers: {
+      cookie: request.headers.get("cookie") || "", // Forward the cookies from the request
+    },
+  });
+
+  console.log('Session:', session);
+
+
+
+  const path = request.nextUrl.pathname;
 
   const isPublicPath = [
     '/sign-in',
     '/sign-up',
     '/forgot-password',
+    '/api/auth/',
     '/welcome'].includes(path);
   console.log('\n\n\nMiddleware:', path);
+  console.log('isPublicPath:', isPublicPath);
 
   if (isPublicPath || session) {
 
     return NextResponse.next();
   }
 
-  return NextResponse.redirect(new URL('/welcome', req.url));
+  return NextResponse.redirect(new URL('/welcome', request.url));
 }
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|api/auth|public|images|welcome|signin).*)',
+    '/((?!_next/static|_next/image|favicon.ico|api/auth|public|images|welcome|sign-in).*)',
   ],
 };
 

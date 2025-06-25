@@ -19,10 +19,18 @@ import {
   useMantineTheme
 } from '@mantine/core';
 import { IconArrowRight, IconBrandFacebook, IconBrandInstagram, IconBrandLinkedin, IconBrandTwitter, IconBrandWhatsapp, IconChartBar, IconMail, IconRocket, IconShieldLock } from '@tabler/icons-react';
+
+import { authClient } from "@betterAuth/client";
 import Link from 'next/link';
+import { useSession } from '../../../lib/auth/betterAuthClient/client';
 
 export default function WelcomePage() {
   const theme = useMantineTheme();
+  const session = useSession();
+  console.log('Session:', session);
+
+  const session2 = authClient.useSession();
+  console.log('Session2:', session2);
 
   // Dados para a galeria de imagens
   const features = [
@@ -79,7 +87,7 @@ export default function WelcomePage() {
           <Button component={Link} href="/sign-in" variant="light" size="sm">
             Entrar
           </Button>
-          <Button component={Link} href="/signup" variant="gradient"
+          <Button component={Link} href="/sign-up" variant="gradient"
             gradient={{ from: 'indigo', to: 'cyan' }} size="sm">
             Criar Conta
           </Button>

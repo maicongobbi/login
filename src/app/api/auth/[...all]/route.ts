@@ -1,5 +1,5 @@
 
-import { auth } from "@betterAuth/utils/auth.ts";
+import { auth } from "@/lib/utils/auth";
 import { toNextJsHandler } from "better-auth/next-js";
 
 
