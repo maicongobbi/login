@@ -23,8 +23,9 @@ const metadata = {
                     type: "String",
                 }, emailVerified: {
                     name: "emailVerified",
-                    type: "DateTime",
+                    type: "Boolean",
                     isOptional: true,
+                    attributes: [{ "name": "@default", "args": [{ "value": false }] }],
                 }, image: {
                     name: "image",
                     type: "String",
