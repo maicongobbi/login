@@ -13,6 +13,12 @@ const metadata = {
                     name: "id",
                     type: "String",
                     isId: true,
+                }, createdAt: {
+                    name: "createdAt",
+                    type: "DateTime",
+                }, updatedAt: {
+                    name: "updatedAt",
+                    type: "DateTime",
                 }, name: {
                     name: "name",
                     type: "String",
@@ -26,12 +32,6 @@ const metadata = {
                     name: "image",
                     type: "String",
                     isOptional: true,
-                }, createdAt: {
-                    name: "createdAt",
-                    type: "DateTime",
-                }, updatedAt: {
-                    name: "updatedAt",
-                    type: "DateTime",
                 }, sessions: {
                     name: "sessions",
                     type: "Session",
@@ -61,18 +61,18 @@ const metadata = {
                     name: "id",
                     type: "String",
                     isId: true,
-                }, expiresAt: {
-                    name: "expiresAt",
-                    type: "DateTime",
-                }, token: {
-                    name: "token",
-                    type: "String",
                 }, createdAt: {
                     name: "createdAt",
                     type: "DateTime",
                 }, updatedAt: {
                     name: "updatedAt",
                     type: "DateTime",
+                }, expiresAt: {
+                    name: "expiresAt",
+                    type: "DateTime",
+                }, token: {
+                    name: "token",
+                    type: "String",
                 }, ipAddress: {
                     name: "ipAddress",
                     type: "String",
@@ -111,6 +111,12 @@ const metadata = {
                     name: "id",
                     type: "String",
                     isId: true,
+                }, createdAt: {
+                    name: "createdAt",
+                    type: "DateTime",
+                }, updatedAt: {
+                    name: "updatedAt",
+                    type: "DateTime",
                 }, accountId: {
                     name: "accountId",
                     type: "String",
@@ -122,14 +128,6 @@ const metadata = {
                     type: "String",
                     isForeignKey: true,
                     relationField: 'user',
-                }, user: {
-                    name: "user",
-                    type: "User",
-                    isDataModel: true,
-                    backLink: 'accounts',
-                    isRelationOwner: true,
-                    onDeleteAction: 'Cascade',
-                    foreignKeyMapping: { "id": "userId" },
                 }, accessToken: {
                     name: "accessToken",
                     type: "String",
@@ -158,12 +156,14 @@ const metadata = {
                     name: "password",
                     type: "String",
                     isOptional: true,
-                }, createdAt: {
-                    name: "createdAt",
-                    type: "DateTime",
-                }, updatedAt: {
-                    name: "updatedAt",
-                    type: "DateTime",
+                }, user: {
+                    name: "user",
+                    type: "User",
+                    isDataModel: true,
+                    backLink: 'accounts',
+                    isRelationOwner: true,
+                    onDeleteAction: 'Cascade',
+                    foreignKeyMapping: { "id": "userId" },
                 },
             }, uniqueConstraints: {
                 id: {
@@ -178,6 +178,14 @@ const metadata = {
                     name: "id",
                     type: "String",
                     isId: true,
+                }, createdAt: {
+                    name: "createdAt",
+                    type: "DateTime",
+                    isOptional: true,
+                }, updatedAt: {
+                    name: "updatedAt",
+                    type: "DateTime",
+                    isOptional: true,
                 }, identifier: {
                     name: "identifier",
                     type: "String",
@@ -187,14 +195,6 @@ const metadata = {
                 }, expiresAt: {
                     name: "expiresAt",
                     type: "DateTime",
-                }, createdAt: {
-                    name: "createdAt",
-                    type: "DateTime",
-                    isOptional: true,
-                }, updatedAt: {
-                    name: "updatedAt",
-                    type: "DateTime",
-                    isOptional: true,
                 },
             }, uniqueConstraints: {
                 id: {

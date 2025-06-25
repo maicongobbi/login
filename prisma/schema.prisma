@@ -14,40 +14,39 @@ generator client {
 
 model User {
   id            String    @id()
-  name          String
-  email         String
-  emailVerified Boolean
-  image         String?
   createdAt     DateTime
   updatedAt     DateTime
+  name          String
+  email         String    @unique()
+  emailVerified Boolean
+  image         String?
   sessions      Session[]
   accounts      Account[]
 
-  @@unique([email])
   @@map("user")
 }
 
 model Session {
   id        String   @id()
-  expiresAt DateTime
-  token     String
   createdAt DateTime
   updatedAt DateTime
+  expiresAt DateTime
+  token     String   @unique()
   ipAddress String?
   userAgent String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([token])
   @@map("session")
 }
 
 model Account {
   id                    String    @id()
+  createdAt             DateTime
+  updatedAt             DateTime
   accountId             String
   providerId            String
   userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
   idToken               String?
@@ -55,19 +54,18 @@ model Account {
   refreshTokenExpiresAt DateTime?
   scope                 String?
   password              String?
-  createdAt             DateTime
-  updatedAt             DateTime
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("account")
 }
 
 model Verification {
   id         String    @id()
+  createdAt  DateTime?
+  updatedAt  DateTime?
   identifier String
   value      String
   expiresAt  DateTime
-  createdAt  DateTime?
-  updatedAt  DateTime?
 
   @@map("verification")
 }

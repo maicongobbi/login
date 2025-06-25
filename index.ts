@@ -7,9 +7,12 @@ import { prisma } from "@/lib/prisma"
 async function main() {
   const user = await prisma.user.create({
     data: {
+      id: '123',
       email: 'asd@asd.com',
       name: 'asd',
-
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      emailVerified: false
     }
   })
   console.log('User created:', user)
