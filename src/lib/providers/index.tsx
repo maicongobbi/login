@@ -10,15 +10,13 @@ import '@mantine/tiptap/styles.css';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 
-import {
-  ClerkProvider
-} from '@clerk/nextjs';
+
 import { Notifications } from "@mantine/notifications";
 import { NavigationProgress } from '@mantine/nprogress';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Suspense, type ReactNode } from "react";
 
-import { ptBR } from '@clerk/localizations';
+
 
 dayjs.locale('pt-br');
 const queryClient = new QueryClient();
@@ -27,29 +25,29 @@ export default function Providers({ children }: { children: ReactNode }) {
 
   return (
     <MantineProvider >
-      <ClerkProvider localization={ptBR}>
 
-        <DatesProvider settings={{ locale: 'pt-BR' }}>
-          <ModalsProvider>
-            <NavigationProgress />
-            <Notifications />
-            <QueryClientProvider client={queryClient}>
 
-              {/*  <SessionProvider> */}
-              <Suspense fallback={
-                <Center h='100vh'>
-                  <Loader size={'lg'} />
-                </Center>
-              }>
-                {children}
+      <DatesProvider settings={{ locale: 'pt-BR' }}>
+        <ModalsProvider>
+          <NavigationProgress />
+          <Notifications />
+          <QueryClientProvider client={queryClient}>
 
-              </Suspense>
-              {/*    </SessionProvider> */}
-            </QueryClientProvider>
-          </ModalsProvider>
-        </DatesProvider>
+            {/*  <SessionProvider> */}
+            <Suspense fallback={
+              <Center h='100vh'>
+                <Loader size={'lg'} />
+              </Center>
+            }>
+              {children}
 
-      </ClerkProvider>
-    </MantineProvider>
+            </Suspense>
+            {/*    </SessionProvider> */}
+          </QueryClientProvider>
+        </ModalsProvider>
+      </DatesProvider>
+
+
+    </MantineProvider >
   );
 }
