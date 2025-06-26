@@ -1,6 +1,6 @@
 'use client';
 
-import SignInComponent from "@/componets/sign-in";
+import SignInComponent from "@/componets/sign/in";
 import { Box } from "@mantine/core";
 
 export default function Page() {

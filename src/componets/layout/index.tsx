@@ -1,7 +1,8 @@
 'use client'
-import { AppShell, Burger, Group, ScrollArea, Skeleton } from "@mantine/core";
+import { AppShell, Burger, Group, ScrollArea } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import React from "react";
+import SignOut from "../sign/out";
 
 export function Layout({ children }: { children?: React.ReactNode }) {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
@@ -25,16 +26,20 @@ export function Layout({ children }: { children?: React.ReactNode }) {
           logo
         </Group>
       </AppShell.Header>
+
       <AppShell.Navbar p="md">
-        Navbar
-        <ScrollArea>
-          {Array(15)
-            .fill(0)
-            .map((_, index) => (
-              <Skeleton key={index} h={28} mt="sm" animate={false} />
-            ))}
-        </ScrollArea>
+        <AppShell.Section grow my="md" component={ScrollArea}>
+          component
+        </AppShell.Section>
+
+        <AppShell.Section>
+          <Group grow>
+            <SignOut />
+          </Group>
+
+        </AppShell.Section>
       </AppShell.Navbar>
+
       <AppShell.Main>{children}</AppShell.Main>
     </AppShell>
   )

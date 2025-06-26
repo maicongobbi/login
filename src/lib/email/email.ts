@@ -8,14 +8,14 @@ import { Resend } from 'resend';
   secure: false,
 });
  */
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend('re_aPNQpdKx_EJj8bEKA293JFRRp6g1uqmCM');
 resend.apiKeys.create({ name: 'Production' });
 
 export async function sendEmail(email: string, subject: string, emailHtml: string) {
 
   const { data, error } = await resend.emails.send({
-    from: 'Acme <onboarding@resend.dev>',
-    to: ['delivered@resend.dev'],
+    from: 'Maicon <maicongobbi@gmail.com>',
+    to: ['maicongobbi@gmail.com'],
     subject: 'Hello world',
     html: `<strong>${emailHtml}</strong>`,
   });

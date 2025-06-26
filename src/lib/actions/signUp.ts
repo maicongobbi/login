@@ -1,6 +1,6 @@
 "use server"
 
-import { FormValueSignUp } from "@/componets/sign-up";
+import { FormValueSignUp } from "@/componets/sign/up";
 import { APIError } from "better-auth/api";
 import { signUp } from "../auth/betterAuthClient/client";
 
