@@ -80,42 +80,6 @@ export default function SignUp() {
     }
   };
 
-  /*   async function createAccount() {
-      setCarregando(true);
-      await signUp.email({
-        image: imagem ? await converterImagemParaBase64(imagem) : "",
-        email,
-        password: senha,
-        name: `${nome}`,
-  
-  
-        callbackURL: "/dashboard",
-        fetchOptions: {
-          onResponse: (data) => {
-            console.log('Response received:', data);
-            setCarregando(false);
-          },
-  
-          onRequest: (req) => {
-            console.log('Request made:', req);
-            setCarregando(true);
-          },
-          onError: (ctx: { error: { message: string } }) => {
-            notifications.show({
-              title: 'Erro ao criar conta',
-              message: ctx.error.message,
-              color: 'red',
-              icon: <IconX size={16} />,
-              autoClose: 5000,
-            });
-          },
-          onSuccess: async (data) => {
-            console.log('Account created successfully:', data);
-            router.push("/dashboard")
-          },
-        },
-      });
-    } */
 
   const onSubmit = async (data: FormValueSignUp) => {
     setCarregando(true);
@@ -127,26 +91,24 @@ export default function SignUp() {
         imagemBase64 = await converterImagemParaBase64(data.imagem);
       }
 
-      const result = await signUpAction({ ...data }, imagemBase64 ?? '');
-      if (result) {
-        const message = result.message;
-        if (message === 'Usuário criado com sucesso') {
-          notifications.show({
-            title: 'Conta criada!',
-            message: 'Sua conta foi criada com sucesso.',
-            color: 'green',
-          });
-          router.push('/dashboard');
-        } else {
-          return notifications.show({
-            title: 'Erro ao criar conta',
-            message: message || 'Ocorreu um problema. Por favor, tente novamente.',
-            color: 'red',
-          });
-        }
+      const resp = await signUpAction({ ...data }, imagemBase64 ?? '');
+
+      if (resp.status === 200) {
+        notifications.show({
+          title: 'Conta criada com sucesso',
+          message: resp.message,
+          color: 'green',
+        });
+        return router.push('/dashboard');
+
+      } else {
+        notifications.show({
+          title: 'Erro ao criar conta',
+          message: resp.message,
+          color: 'red',
+          autoClose: 10000,
+        });
       }
-
-
     } catch (error) {
       console.error('Erro ao criar conta:', error);
       notifications.show({

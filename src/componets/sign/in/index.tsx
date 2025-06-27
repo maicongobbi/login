@@ -1,4 +1,5 @@
 'use client'
+import signInAction from '@/lib/actions/signIn';
 import { signIn } from '@/lib/auth/betterAuthClient/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -49,29 +50,26 @@ export default function SignInComponent() {
     setLoading(true);
 
     try {
-      await signIn.email(
-        { email: data.email, password: data.password },
-        {
-          onRequest: () => console.log('Signing in with email:', data.email),
-          onResponse: (resp) => {
-            if (resp.response.statusText === 'UNAUTHORIZED') {
-              notifications.show({
-                title: 'Erro ao fazer login',
-                message: 'Credenciais inválidas. Verifique seu email e senha.',
-                color: 'red',
-              });
-            }
-          },
-          onSuccess: () => {
-            notifications.show({
-              title: 'Login bem-sucedido',
-              message: 'Você foi autenticado com sucesso.',
-              color: 'green',
-            });
-            window.location.href = '/dashboard';
-          }
-        }
-      );
+      const resp = await signInAction({
+        email: data.email,
+        password: data.password
+      }) as { message?: string, status: number };
+
+      if (resp.status === 200) {
+        notifications.show({
+          title: 'Login bem-sucedido',
+          message: resp.message,
+          color: 'green',
+        });
+      } else {
+        notifications.show({
+          title: 'Erro no login',
+          message: resp.message,
+          color: 'red',
+          autoClose: 10000,
+        });
+      }
+
     } catch (error) {
       console.error('Erro no login:', error);
       notifications.show({

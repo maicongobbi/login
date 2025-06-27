@@ -19,7 +19,6 @@ export async function middleware(request: NextRequest) {
   console.log('Session:', session);
 
 
-
   const path = request.nextUrl.pathname;
 
   const isPublicPath = [

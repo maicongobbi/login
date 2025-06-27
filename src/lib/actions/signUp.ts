@@ -1,11 +1,12 @@
 "use server"
 
 import { FormValueSignUp } from "@/componets/sign/up";
-import { APIError } from "better-auth/api";
 import { signUp } from "../auth/betterAuthClient/client";
 
-export async function signUpAction(formData: FormValueSignUp, image: string): Promise<{ message?: string }> {
+export async function signUpAction(formData: FormValueSignUp, image: string): Promise<{ message: string, status: number }> {
   const { email, senha, nome } = formData;
+  let message: string = '';
+  let status: number = 200;
 
   try {
 
@@ -14,50 +15,35 @@ export async function signUpAction(formData: FormValueSignUp, image: string): Pr
       email,
       password: senha,
       name: nome,
-      callbackURL: "/dashboard",
-      fetchOptions: {
-        onResponse: (data) => {
-          console.log('Response received:', data);
-        },
-        onRequest: (req) => {
-          console.log('Request made:', req);
-        },
-        onError: (ctx: { error: { message: string } }) => {
-          console.error('Error during sign up:', ctx.error.message);
+      callbackURL: "/sign-in",
 
-          throw new APIError("BAD_REQUEST", {
-            message: ctx.error.message || "Erro ao criar conta, por favor tente novamente.",
-          });
-        },
-        onSuccess: async (data) => {
-          console.log('Account created successfully:', data);
-        },
+
+    }, {
+
+
+      onError: (ctx: { error: { message: string } }) => {
+        console.error('\n\nErro ao criar conta:', ctx.error.message);
+
+        if (ctx.error.message.includes('User already exists')) {
+          message = 'Usuário já existe. Caso tenha esquecido, recupere a senha.';
+          status = 401;
+        } else {
+          message = 'Ocorreu um erro durante o login. Tente novamente.';
+          status = 500;
+        }
       },
+      onSuccess: () => {
+        message = 'Login realizado com sucesso!';
+        status = 200;
 
-    });
-  } catch (error) {
-    console.error("Erro ao criar conta:", error);
-    if (error instanceof APIError) {
-      switch (error.status) {
-        case "UNPROCESSABLE_ENTITY":
-          console.error("Unprocessed entity error:", error);
-          return { message: "Usuário já cadastrado" }
-        case "BAD_REQUEST":
-          if (error.message.includes("already exists")) {
-            return { message: "Usuário já existe, faça login na conta" }
-          }
-          return { message: "Dados inválidos, " + error.message || "por favor verifique os dados e tente novamente." }
-        case "UNAUTHORIZED":
-          console.error("Unauthorized error:", error);
-          return { message: "Você não está autorizado a realizar esta ação." }
-        default:
-          console.error("Unexpected error:", error);
-          return { message: "Erro inesperado, por favor tente novamente mais tarde." }
       }
-    }
-  }
+    });
 
-  return { message: "Usuário criado com sucesso" };
+    return { message, status };
+  } catch (error) {
+    console.error('Erro no login:', error);
+    return { message: 'Ocorreu um problema durante o login. Tente novamente.', status: 500 };
+  }
 }
 
 
