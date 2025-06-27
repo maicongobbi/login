@@ -4,7 +4,6 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 //import prisma from "../../src/lib/prisma";
-import { emailOTP } from "better-auth/plugins";
 
 
 export const auth = betterAuth({
@@ -32,14 +31,14 @@ export const auth = betterAuth({
         console.log('Usuário:', user);
         console.log('URL de verificação:', url);
         console.log('Enviando email de verificação:', user);
-        sendEmail(user.email, "Verify your email address", `Click the link to verify your email: ${url}`);
+        await sendEmail(user.email, "Verify your email address", `Click the link to verify your email: ${url}`);
       }
     },
-    async sendResetPassword(data, request) {
-      console.log('Email enviado para redefinição de senha:', data);
-      console.log('Requisição:', request);
-
+    async sendResetPassword({ user, url }) {
+      console.log('\n\n\n\nRequisição de reset de senha:', user);
+      await sendEmail(user.email, "Reset de senha", `Clique no link para resetar sua senha: ${url} <br/> Se você não solicitou essa alteração, ignore este email. <br/>Você tem 3 horas para completar a alteração de senha.`);
     },
+    resetPasswordTokenExpiresIn: 60 * 60 * 3,
   },
   account: {
     accountLinking: {
@@ -62,21 +61,21 @@ export const auth = betterAuth({
   },
 
   plugins: [
-    emailOTP({
-      async sendVerificationOTP({
-        email,
-        otp,
-        type
-      }) {
-        if (type === "sign-in") {
-          sendEmail(email, "Your OTP Code", `Your OTP code is: ${otp}`);
-        } else if (type === "email-verification") {
-          sendEmail(email, "Your Email Verification Code", `Your email verification code is: ${otp}`);
-        } else {
-          sendEmail(email, "Your Password Reset Code", `Your password reset code is: ${otp}`);
-        }
-      },
-    }),
+    /*  emailOTP({
+       async sendVerificationOTP({
+         email,
+         otp,
+         type
+       }) {
+         if (type === "sign-in") {
+           await sendEmail(email, "Your OTP Code", `Your OTP code is: ${otp}`);
+         } else if (type === "email-verification") {
+           await sendEmail(email, "Your Email Verification Code", `Your email verification code is: ${otp}`);
+         } else {
+           await sendEmail(email, "Your Password Reset Code", `Your password reset code is: ${otp}`);
+         }
+       },
+     }), */
 
     // make sure this is the last plugin in the array
     nextCookies()

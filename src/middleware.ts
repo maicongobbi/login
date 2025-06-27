@@ -24,9 +24,12 @@ export async function middleware(request: NextRequest) {
   const isPublicPath = [
     '/sign-in',
     '/sign-up',
-    '/forgot-password',
-    '/api/auth/',
+    '/forgot-account',
+    '/forgot-account/forgot-password',
+    '/forgot-account/forgot-password/reset-password',
+    '/api/auth',
     '/welcome'].includes(path);
+
   console.log('\n\n\nMiddleware:', path);
   console.log('isPublicPath:', isPublicPath);
 

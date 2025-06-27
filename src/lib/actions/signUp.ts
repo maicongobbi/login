@@ -1,6 +1,6 @@
 "use server"
 
-import { FormValueSignUp } from "@/componets/sign/up";
+import { FormValueSignUp } from "@/componets/login/sign/up";
 import { signUp } from "../auth/betterAuthClient/client";
 
 export async function signUpAction(formData: FormValueSignUp, image: string): Promise<{ message: string, status: number }> {

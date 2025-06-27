@@ -2,7 +2,7 @@
 import { AppShell, Burger, Group, ScrollArea } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import React from "react";
-import SignOut from "../sign/out";
+import SignOut from "../login/sign/out";
 
 export function Layout({ children }: { children?: React.ReactNode }) {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();

@@ -3,6 +3,7 @@ import { signUpAction } from '@/lib/actions/signUp';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  ActionIcon,
   Box,
   Button,
   Card,
@@ -14,10 +15,11 @@ import {
   rem,
   Stack,
   Text,
-  TextInput
+  TextInput,
+  Tooltip
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { IconLock, IconMail, IconUpload, IconUser, IconUserCircle, IconX } from '@tabler/icons-react';
+import { IconArrowLeft, IconLock, IconMail, IconUpload, IconUser, IconUserCircle, IconX } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -125,7 +127,24 @@ export default function SignUp() {
     <Card shadow="md" p="lg" radius="md" withBorder className="max-w-md" style={{ borderRadius: '0 0 8px 8px' }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Card.Section p="md" bg="blue.1">
-          <Text size="xl" fw={700} ta="center">Criar Conta</Text>
+          <Box pos="relative" mih={40}>
+            <Tooltip label="Voltar para a página de boas-vindas" position="left" withArrow>
+
+              <ActionIcon
+                component="a"
+                href="/welcome"
+                title="Voltar"
+                variant="transparent"
+                size="lg"
+                color="red"
+                style={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)' }}
+              >
+                <IconArrowLeft size={16} />
+              </ActionIcon>
+            </Tooltip>
+
+            <Text size="xl" fw={700} ta="center">Criar Conta</Text>
+          </Box>
           <Text c="dimmed" size="sm" ta="center">
             Informe seus dados para criar uma conta
           </Text>

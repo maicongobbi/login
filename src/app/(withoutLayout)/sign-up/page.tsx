@@ -1,6 +1,6 @@
 'use client'
 
-import SignUp from "@/componets/sign/up"
+import SignUp from "@/componets/login/sign/up"
 import { Box } from "@mantine/core"
 
 export default function Page() {

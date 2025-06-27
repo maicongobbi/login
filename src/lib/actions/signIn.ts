@@ -23,7 +23,8 @@ export default async function signInAction({ email, password }: { email: string,
             status = 500;
           }
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
+          console.log('Login successful:', data);
           message = 'Login realizado com sucesso!';
           status = 200;
 

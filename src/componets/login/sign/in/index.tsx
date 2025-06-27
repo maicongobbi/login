@@ -3,19 +3,23 @@ import signInAction from '@/lib/actions/signIn';
 import { signIn } from '@/lib/auth/betterAuthClient/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  ActionIcon,
+  Box,
   Button,
   Card,
   Center,
   Checkbox,
   Divider,
+  Group,
   Loader,
   PasswordInput,
   Stack,
   Text,
-  TextInput
+  TextInput,
+  Tooltip
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { IconBrandApple, IconBrandFacebook, IconBrandGoogle, IconKey, IconLock, IconMail } from '@tabler/icons-react';
+import { IconArrowLeft, IconBrandApple, IconBrandFacebook, IconBrandGoogle, IconKey, IconLock, IconMail } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -54,7 +58,7 @@ export default function SignInComponent() {
         email: data.email,
         password: data.password
       }) as { message?: string, status: number };
-
+      console.log('Resposta do login:', resp);
       if (resp.status === 200) {
         notifications.show({
           title: 'Login bem-sucedido',
@@ -86,7 +90,29 @@ export default function SignInComponent() {
     <Card shadow="md" padding="lg" radius="md" withBorder className="max-w-md">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Card.Section p="md">
-          <Text size="xl" fw={700} ta="center">Entrar</Text>
+          <Box pos="relative" mih={40}>
+            <Tooltip label="Voltar para a página de boas-vindas" position="left" withArrow>
+
+              <ActionIcon
+                component="a"
+                href="/welcome"
+                title="Voltar"
+                variant="transparent"
+                size="lg"
+                color="red"
+                style={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)' }}
+              >
+                <IconArrowLeft size={16} />
+              </ActionIcon>
+            </Tooltip>
+
+            <Text size="xl" fw={700} ta="center">
+              Entrar
+            </Text>
+          </Box>
+
+
+
           <Text c="dimmed" size="sm" ta="center">
             Insira seu email abaixo para fazer login na sua conta
           </Text>
@@ -112,15 +138,25 @@ export default function SignInComponent() {
               error={errors.password?.message}
               {...register('password')}
             />
+            <Group justify='space-between'>
 
-            <Link href="#" style={{ fontSize: '0.8rem' }}>
-              Esqueceu sua senha?
-            </Link>
+              <Checkbox
+                label="Lembrar de mim"
+                {...register('rememberMe')}
+              />
+              <Button component='a'
+                href="/forgot-account"
+                variant="subtle"
+                size="xs"
+                c={'dimmed'}
 
-            <Checkbox
-              label="Lembrar de mim"
-              {...register('rememberMe')}
-            />
+                disabled={loading}
+              >
+                Esqueci minha senha
+              </Button>
+
+
+            </Group>
 
             <Button
               type="submit"

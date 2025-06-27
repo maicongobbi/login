@@ -38,6 +38,7 @@
     "@tiptap/pm": "^2.22.3",
     "@tiptap/react": "^2.22.3",
     "@tiptap/starter-kit": "^2.22.3",
+    "@types/nodemailer": "^6.4.17",
     "@zenstackhq/runtime": "2.16.0",
     "@zenstackhq/server": "^2.16.0",
     "@zenstackhq/tanstack-query": "^2.16.0",
