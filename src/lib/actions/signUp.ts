@@ -22,9 +22,9 @@ export async function signUpAction(formData: FormValueSignUp, image: string): Pr
 
 
       onError: (ctx: { error: { message: string } }) => {
-        console.error('\n\nErro ao criar conta:', ctx.error.message);
+        console.error('\n\nErro ao criar conta:', ctx?.error?.message);
 
-        if (ctx.error.message.includes('User already exists')) {
+        if (ctx?.error?.message?.includes('User already exists')) {
           message = 'Usuário já existe. Caso tenha esquecido, recupere a senha.';
           status = 401;
         } else {

@@ -14,8 +14,8 @@ export default async function signInAction({ email, password }: { email: string,
 
       {
         onError: (ctx: { error: { message: string } }) => {
-
-          if (ctx.error.message.includes('Invalid email')) {
+          console.error('\n\nErro ao fazer login:', ctx?.error?.message);
+          if (ctx?.error?.message?.includes('Invalid email')) {
             message = 'Credenciais inválidas. Verifique seu email e senha.';
             status = 401;
           } else {
