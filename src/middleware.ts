@@ -16,9 +16,6 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  console.log('Session:', session);
-
-
   const path = request.nextUrl.pathname;
 
   const isPublicPath = [
@@ -38,10 +35,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  return NextResponse.redirect(new URL('/welcome', request.url));
+  return NextResponse.redirect(new URL('/welcome',
+    request.url));
 }
 
 export const config = {
+
+
   matcher: [
     '/((?!_next/static|_next/image|favicon.ico|api/auth|public|images|welcome|sign-in).*)',
   ],

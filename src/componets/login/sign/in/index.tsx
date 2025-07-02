@@ -58,6 +58,33 @@ export default function SignInComponent() {
         email: data.email,
         password: data.password
       }) as { message?: string, status: number };
+
+
+      const r2 = await signIn.email(
+        { email: data.email, password: data.password },
+        {
+          onRequest: () => console.log('Signing in with email:', data.email),
+          onResponse: (resp) => {
+            if (resp.response.statusText === 'UNAUTHORIZED') {
+              notifications.show({
+                title: 'Erro ao fazer login',
+                message: 'Credenciais inválidas. Verifique seu email e senha.',
+                color: 'red',
+              });
+            }
+          },
+          onSuccess: () => {
+            notifications.show({
+              title: 'Login bem-sucedido',
+              message: 'Você foi autenticado com sucesso.',
+              color: 'green',
+            });
+            window.location.href = '/dashboard';
+          }
+        }
+      );
+      console.log('\n\n\nResposta do signIn:', r2);
+
       console.log('Resposta do login:', resp);
       if (resp.status === 200) {
         notifications.show({
