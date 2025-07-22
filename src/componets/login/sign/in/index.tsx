@@ -1,4 +1,5 @@
 'use client'
+import signInAction from '@/lib/actions/signIn';
 import { signIn } from '@/lib/auth/betterAuthClient/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -53,38 +54,38 @@ export default function SignInComponent() {
     setLoading(true);
 
     try {
-      /*  const resp = await signInAction({
-         email: data.email,
-         password: data.password
-       }) as { message?: string, status: number }; */
-ver pq a action nao está a a funcionr
+      const resp = await signInAction({
+        email: data.email,
+        password: data.password
+      }) as { message?: string, status: number };
 
-      const resp = await signIn.email(
-        {
-          email: data.email, password: data.password,
-          callbackURL: '/dashboard'
-        },
-        {
-          onRequest: () => console.log('Signing in with email:', data.email),
-          onResponse: (resp) => {
-            if (resp.response.statusText === 'UNAUTHORIZED') {
-              notifications.show({
-                title: 'Erro ao fazer login',
-                message: 'Credenciais inválidas. Verifique seu email e senha.',
-                color: 'red',
-              });
-            }
-          },
-          onSuccess: () => {
-            notifications.show({
-              title: 'Login bem-sucedido',
-              message: 'Você foi autenticado com sucesso.',
-              color: 'green',
-            });
-            // window.location.href = '/dashboard';
-          }
-        }
-      );
+
+      /*  const resp = await signIn.email(
+         {
+           email: data.email, password: data.password,
+           callbackURL: '/dashboard'
+         },
+         {
+           onRequest: () => console.log('Signing in with email:', data.email),
+           onResponse: (resp) => {
+             if (resp.response.statusText === 'UNAUTHORIZED') {
+               notifications.show({
+                 title: 'Erro ao fazer login',
+                 message: 'Credenciais inválidas. Verifique seu email e senha.',
+                 color: 'red',
+               });
+             }
+           },
+           onSuccess: () => {
+             notifications.show({
+               title: 'Login bem-sucedido',
+               message: 'Você foi autenticado com sucesso.',
+               color: 'green',
+             });
+             // window.location.href = '/dashboard';
+           }
+         }
+       ); */
       console.log('\n\n\nResposta do signIn:', resp);
 
       console.log('Resposta do login:', resp);

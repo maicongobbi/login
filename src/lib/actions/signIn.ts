@@ -1,4 +1,4 @@
-'use server'
+"use client"
 import { signIn } from "../auth/betterAuthClient/client";
 
 
@@ -8,8 +8,8 @@ export default async function signInAction({ email, password }: { email: string,
 
     let message: string = '';
     let status: number = 200;
-
-    await signIn.email(
+    console.log('Iniciando o processo de login com email:', email);
+    const resp = await signIn.email(
       { email, password, callbackURL: '/dashboard' },
 
       {
@@ -31,6 +31,7 @@ export default async function signInAction({ email, password }: { email: string,
         }
       }
     );
+    console.log('Resposta do signIn:', resp);
 
     return { message, status };
   } catch (error) {
