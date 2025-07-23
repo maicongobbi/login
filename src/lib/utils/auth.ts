@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
+import { sendEmail } from "../email/email";
+
 //import prisma from "../../src/lib/prisma";
 
 
@@ -17,7 +19,8 @@ export const auth = betterAuth({
     autoSignIn: true,
 
     requireEmailVerification: true,
-    /* emailVerification: {
+
+    emailVerification: {
       sendOnSignUp: true,
       autoSignInAfterVerification: true,
 
@@ -38,7 +41,7 @@ export const auth = betterAuth({
       console.log('\n\n\n\nRequisição de reset de senha:', user);
       await sendEmail(user.email, "Reset de senha", `Clique no link para resetar sua senha: ${url} <br/> Se você não solicitou essa alteração, ignore este email. <br/>Você tem 3 horas para completar a alteração de senha.`);
     },
-    resetPasswordTokenExpiresIn: 60 * 60 * 3, */
+    resetPasswordTokenExpiresIn: 60 * 60 * 3,
   },
 
   /* account: {
@@ -49,7 +52,8 @@ export const auth = betterAuth({
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+
     },
     facebook: {
       clientId: process.env.FACEBOOK_CLIENT_ID!,

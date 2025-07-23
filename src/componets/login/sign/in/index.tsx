@@ -8,7 +8,6 @@ import {
   Button,
   Card,
   Center,
-  Checkbox,
   Divider,
   Group,
   Loader,
@@ -59,36 +58,6 @@ export default function SignInComponent() {
         password: data.password
       }) as { message?: string, status: number };
 
-
-      /*  const resp = await signIn.email(
-         {
-           email: data.email, password: data.password,
-           callbackURL: '/dashboard'
-         },
-         {
-           onRequest: () => console.log('Signing in with email:', data.email),
-           onResponse: (resp) => {
-             if (resp.response.statusText === 'UNAUTHORIZED') {
-               notifications.show({
-                 title: 'Erro ao fazer login',
-                 message: 'Credenciais inválidas. Verifique seu email e senha.',
-                 color: 'red',
-               });
-             }
-           },
-           onSuccess: () => {
-             notifications.show({
-               title: 'Login bem-sucedido',
-               message: 'Você foi autenticado com sucesso.',
-               color: 'green',
-             });
-             // window.location.href = '/dashboard';
-           }
-         }
-       ); */
-      console.log('\n\n\nResposta do signIn:', resp);
-
-      console.log('Resposta do login:', resp);
       if (resp.status === 200) {
         notifications.show({
           title: 'Login bem-sucedido',
@@ -170,10 +139,10 @@ export default function SignInComponent() {
             />
             <Group justify='space-between'>
 
-              <Checkbox
+              {/* <Checkbox
                 label="Lembrar de mim"
                 {...register('rememberMe')}
-              />
+              /> */}
               <Button component='a'
                 href="/forgot-account"
                 variant="subtle"
@@ -206,7 +175,11 @@ export default function SignInComponent() {
               disabled={loading}
               onClick={async () => {
                 await signIn.social(
-                  { provider: "google", callbackURL: "/dashboard" },
+                  {
+
+                    provider: "google",
+                    callbackURL: "/dashboard"
+                  },
                   { onRequest: () => setLoading(true) }
                 );
               }}
